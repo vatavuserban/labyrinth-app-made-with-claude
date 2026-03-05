@@ -1,3 +1,10 @@
+## 2026-03-05 - US-004 (iteration 2: mark passes)
+- All US-004 ACs already satisfied by prior iteration (COLS=50, ROWS=50, CELL_SIZE=10 → 500×500 canvas)
+- prd.json was left with passes:false after prior commit; this iteration corrects it to passes:true
+- Ran typecheck and lint — both pass clean
+- Files changed: scripts/ralph/prd.json, scripts/ralph/progress.txt
+---
+
 ## 2026-03-05 - US-004
 - Changed grid from 25 cols × 40 rows × 20px to 50 cols × 50 rows × 10px (500×500 canvas)
 - Canvas now 500×500; CSS container auto-sizes to canvas HTML attributes (no CSS change needed)

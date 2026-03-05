@@ -52,11 +52,11 @@
         "Maze is rendered fully within the 500x500 container (no overflow)",
         "Walls are clearly visible; paths are navigable",
         "Start cell and Exit cell are visually distinct (icons or colors)",
-        "Rendering approach is deterministic from the maze state (Canvas or SVG/HTML grid). row grid should be big maybe 50x50"
+        "Rendering approach is deterministic from the maze state (Canvas or SVG/HTML grid). row grid should be big "
       ],
       "priority": 4,
       "passes": true,
-      "notes": "Canvas is recommended for drawing and input tracking; SVG also acceptable."
+      "notes": "Canvas is recommended for drawing and input tracking; SVG also acceptable. 1/10 of grid size "
     },
     {
       "id": "US-005",
