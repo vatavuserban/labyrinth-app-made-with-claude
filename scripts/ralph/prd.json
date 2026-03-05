@@ -1,0 +1,118 @@
+{
+  "project": "react-labyrinth",
+  "branchName": "master",
+  "description": "Single-page React labyrinth app. Generates a maze inside a 500x800 area. Supports user input to draw a path from start to exit. Runnable locally via npm scripts.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Create empty React app scaffold",
+      "description": "As a developer, I want an empty React app created in this repo so I can run and iterate locally.",
+      "acceptanceCriteria": [
+        "Repository contains a React project scaffold created via standard tooling (CRA or Vite)",
+        "App runs locally with a single command (prefer: npm run start; acceptable: npm run dev if Vite, but add npm run start alias)",
+        "README includes exact commands for install and run (npm install; npm run start)"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": "Prefer Vite for simplicity; if Vite is used, ensure package.json has a 'start' script that maps to 'vite'."
+    },
+    {
+      "id": "US-002",
+      "title": "Single-page UI layout with fixed maze area",
+      "description": "As a user, I want a single page that contains a dedicated labyrinth area sized 500x800 so I can play consistently.",
+      "acceptanceCriteria": [
+        "App is a single page (no routing required)",
+        "A visible container for the labyrinth is exactly 500px wide and 800px tall",
+        "Page shows a title and controls above the labyrinth area",
+        "Layout is responsive around the fixed labyrinth area (centered or aligned cleanly)"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": "Use CSS to enforce exact dimensions for the maze container."
+    },
+    {
+      "id": "US-003",
+      "title": "Generate button and maze data model",
+      "description": "As a user, I want a button to generate a new labyrinth so each game feels different.",
+      "acceptanceCriteria": [
+        "A 'Generate labyrinth' button exists and is clearly visible",
+        "Clicking the button creates a new maze (different layout most of the time)",
+        "Maze generation produces a data model (grid/cells/walls) stored in React state",
+        "Start and Exit positions are defined and rendered"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": "Use a standard maze algorithm (e.g., recursive backtracker). Keep the grid size reasonable for rendering performance."
+    },
+    {
+      "id": "US-004",
+      "title": "Render labyrinth inside 500x800 area",
+      "description": "As a user, I want to see the labyrinth walls clearly rendered inside the fixed area.",
+      "acceptanceCriteria": [
+        "Maze is rendered fully within the 500x800 container (no overflow)",
+        "Walls are clearly visible; paths are navigable",
+        "Start cell and Exit cell are visually distinct (icons or colors)",
+        "Rendering approach is deterministic from the maze state (Canvas or SVG/HTML grid)"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": "Canvas is recommended for drawing and input tracking; SVG also acceptable."
+    },
+    {
+      "id": "US-005",
+      "title": "Input: draw a line from start to exit",
+      "description": "As a user, I want to click/touch at the start and draw a continuous line through the labyrinth until I reach the exit.",
+      "acceptanceCriteria": [
+        "Supports mouse input: pointer down, move, up to draw a line",
+        "Supports touch input (Pointer Events preferred) for drawing on mobile",
+        "Drawing starts only when user begins in the Start area/cell (or very close to it)",
+        "A drawn line is displayed in real-time as the user moves",
+        "A 'Clear path' action exists to reset drawing without regenerating the maze"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": "Use Pointer Events (pointerdown/move/up/cancel) to unify mouse + touch."
+    },
+    {
+      "id": "US-006",
+      "title": "Collision rules: prevent drawing through walls",
+      "description": "As a user, I want the game to prevent cheating by drawing through walls so the labyrinth is meaningful.",
+      "acceptanceCriteria": [
+        "If the drawn path crosses a wall, the app detects it and blocks progress (either stop drawing, or mark as invalid and require restart)",
+        "Collision detection is reliable at typical pointer speeds",
+        "User receives clear feedback when they hit a wall (message or visual indicator)",
+        "User can restart drawing after a collision (auto-clear or via Clear button)"
+      ],
+      "priority": 6,
+      "passes": false,
+      "notes": "If using Canvas, you can check sampled points against wall boundaries; if using grid model, check movement between cells for wall presence."
+    },
+    {
+      "id": "US-007",
+      "title": "Win condition and feedback",
+      "description": "As a user, I want to know when I successfully reach the exit.",
+      "acceptanceCriteria": [
+        "When the drawn path reaches the Exit area/cell, the app shows a success state (message/modal/banner)",
+        "Success state offers actions: Generate new labyrinth, or draw again",
+        "No false positives: must actually enter the Exit area via valid path (no wall crossing)"
+      ],
+      "priority": 7,
+      "passes": false,
+      "notes": "Keep the UX minimal but clear."
+    },
+    {
+      "id": "US-008",
+      "title": "Polish: README + basic quality checks",
+      "description": "As a developer, I want clear run instructions and basic checks so the project is easy to use and maintain.",
+      "acceptanceCriteria": [
+        "README includes: prerequisites (Node/npm), install, run, and short usage instructions",
+        "Project includes consistent formatting/linting (minimal setup is fine)",
+        "No critical console errors in dev mode",
+        "App builds successfully (if build script exists) or at least runs reliably via npm run start"
+      ],
+      "priority": 8,
+      "passes": false,
+      "notes": "Do not over-engineer; keep dependencies minimal."
+    }
+  ]
+}

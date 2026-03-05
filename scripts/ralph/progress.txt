@@ -1,0 +1,22 @@
+## Codebase Patterns
+- React single-page app
+- Maze rendered within a fixed 500x800 area
+- Pointer Events for input (mouse + touch)
+- Path drawing is validated against maze walls (no wall crossing)
+
+## Decisions Log
+- Scaffold tool: TBD (prefer Vite; ensure npm run start exists)
+- Rendering: TBD (prefer Canvas for drawing + collision)
+- Maze algorithm: TBD (recursive backtracker recommended)
+
+## Current State
+- Repo is empty
+- prd.json created
+- Next: scaffold app, confirm run command, render placeholder 500x800 area
+
+---
+## Last Iteration Summary
+(none yet)
+
+## Next Iteration Goal
+US-001: Create empty React app scaffold + README run steps.
