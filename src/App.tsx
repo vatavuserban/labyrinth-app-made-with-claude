@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { generateMaze, type Maze } from './maze'
 
-const COLS = 50
-const ROWS = 50
-const CELL_SIZE = 10
+const COLS = 10
+const ROWS = 10
+const CELL_SIZE = 50
 
 type Point = { x: number; y: number }
 
@@ -46,7 +46,7 @@ function drawMazeBase(ctx: CanvasRenderingContext2D, maze: Maze) {
 function drawPath(ctx: CanvasRenderingContext2D, path: Point[]) {
   if (path.length < 2) return
   ctx.strokeStyle = '#3b82f6'
-  ctx.lineWidth = 3
+  ctx.lineWidth = 10
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
   ctx.beginPath()
@@ -141,8 +141,8 @@ function App() {
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!maze || !canvasRef.current) return
 
-    // Resume drawing from the frozen last valid point after a wall hit
-    if (hitWallRef.current) {
+    // Resume drawing from last valid point (after wall hit or normal pointerup with existing path)
+    if (pathRef.current.length > 0 && !won) {
       hitWallRef.current = false
       isDrawingRef.current = true
       setWallHit(false)
@@ -150,7 +150,7 @@ function App() {
       return
     }
 
-    // Fresh start from start cell
+    // Fresh start from start cell (only when no path exists)
     const pos = getCanvasPos(e, canvasRef.current)
     const { col, row } = maze.start
     const inStart =

@@ -113,6 +113,19 @@
       "priority": 8,
       "passes": true,
       "notes": "Do not over-engineer; keep dependencies minimal."
+    },
+    {
+      "id": "bug1",
+      "title": "user stops drawing then cannot continue from where left off",
+      "description": "As a developer, I want to ensure that if the user stops drawing (pointerup) and then tries to resume drawing from the last valid point (pointerdown near lastValidPoint), they can continue without the path resetting to Start or allowing arbitrary restarts.",
+      "acceptanceCriteria": [
+        "After a pointerup event, the user can resume drawing by performing a pointerdown event near the last valid point (lastValidPoint) without the path resetting to Start.",
+        "The next pointerdown after stopping drawing should enable drawing and subsequent pointer moves should extend the same path from lastValidPoint.",
+        "The user should not be able to start drawing from arbitrary points on the maze; they must resume from/near lastValidPoint."
+      ],
+      "priority": 9,
+      "passes": true,
+      "notes": "Do not over-engineer; keep dependencies minimal."
     }
   ]
 }
