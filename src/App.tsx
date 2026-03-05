@@ -43,24 +43,44 @@ function drawMazeBase(ctx: CanvasRenderingContext2D, maze: Maze) {
   ctx.fillText('E', maze.exit.col * CELL_SIZE + CELL_SIZE / 2, maze.exit.row * CELL_SIZE + CELL_SIZE / 2)
 }
 
-function drawPath(ctx: CanvasRenderingContext2D, path: Point[], hitWall: boolean) {
+function drawPath(ctx: CanvasRenderingContext2D, path: Point[], validLength: number, hitWall: boolean) {
   if (path.length < 2) return
-  ctx.strokeStyle = hitWall ? '#ef4444' : '#3b82f6'
-  ctx.lineWidth = 3
-  ctx.lineCap = 'round'
-  ctx.lineJoin = 'round'
-  ctx.beginPath()
-  ctx.moveTo(path[0].x, path[0].y)
-  for (let i = 1; i < path.length; i++) {
-    ctx.lineTo(path[i].x, path[i].y)
+
+  // Draw valid portion in blue
+  const validEnd = hitWall ? validLength : path.length
+  if (validEnd >= 2) {
+    ctx.strokeStyle = '#3b82f6'
+    ctx.lineWidth = 3
+    ctx.lineCap = 'round'
+    ctx.lineJoin = 'round'
+    ctx.beginPath()
+    ctx.moveTo(path[0].x, path[0].y)
+    for (let i = 1; i < validEnd; i++) {
+      ctx.lineTo(path[i].x, path[i].y)
+    }
+    ctx.stroke()
   }
-  ctx.stroke()
+
+  // Draw invalid (wall-hit) portion in red
+  if (hitWall && path.length > validLength) {
+    ctx.strokeStyle = '#ef4444'
+    ctx.lineWidth = 3
+    ctx.lineCap = 'round'
+    ctx.lineJoin = 'round'
+    ctx.beginPath()
+    const startIdx = Math.max(0, validLength - 1)
+    ctx.moveTo(path[startIdx].x, path[startIdx].y)
+    for (let i = validLength; i < path.length; i++) {
+      ctx.lineTo(path[i].x, path[i].y)
+    }
+    ctx.stroke()
+  }
 }
 
-function redraw(canvas: HTMLCanvasElement, maze: Maze, path: Point[], hitWall: boolean) {
+function redraw(canvas: HTMLCanvasElement, maze: Maze, path: Point[], validLength: number, hitWall: boolean) {
   const ctx = canvas.getContext('2d')!
   drawMazeBase(ctx, maze)
-  drawPath(ctx, path, hitWall)
+  drawPath(ctx, path, validLength, hitWall)
 }
 
 type Cell = { col: number; row: number }
@@ -105,12 +125,14 @@ function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const isDrawingRef = useRef(false)
   const pathRef = useRef<Point[]>([])
+  const validPathLengthRef = useRef(0)
   const hitWallRef = useRef(false)
   const currentCellRef = useRef<Cell | null>(null)
 
   const handleGenerate = () => {
     isDrawingRef.current = false
     hitWallRef.current = false
+    validPathLengthRef.current = 0
     pathRef.current = []
     currentCellRef.current = null
     setHasPath(false)
@@ -122,25 +144,55 @@ function App() {
   const handleClearPath = () => {
     isDrawingRef.current = false
     hitWallRef.current = false
+    validPathLengthRef.current = 0
     pathRef.current = []
     currentCellRef.current = null
     setHasPath(false)
     setWallHit(false)
     setWon(false)
     if (maze && canvasRef.current) {
-      redraw(canvasRef.current, maze, [], false)
+      redraw(canvasRef.current, maze, [], 0, false)
     }
   }
 
   useEffect(() => {
     if (maze && canvasRef.current) {
-      redraw(canvasRef.current, maze, pathRef.current, hitWallRef.current)
+      redraw(canvasRef.current, maze, pathRef.current, validPathLengthRef.current, hitWallRef.current)
     }
   }, [maze])
 
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!maze || !canvasRef.current) return
     const pos = getCanvasPos(e, canvasRef.current)
+
+    // Resume from a point on the valid path after a wall hit
+    if (hitWallRef.current) {
+      const validPath = pathRef.current.slice(0, validPathLengthRef.current)
+      let nearestIdx = -1
+      let nearestDist = Infinity
+      for (let i = 0; i < validPath.length; i++) {
+        const dx = validPath[i].x - pos.x
+        const dy = validPath[i].y - pos.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        if (dist < CELL_SIZE && dist < nearestDist) {
+          nearestDist = dist
+          nearestIdx = i
+        }
+      }
+      if (nearestIdx >= 0) {
+        pathRef.current = validPath.slice(0, nearestIdx + 1)
+        validPathLengthRef.current = pathRef.current.length
+        hitWallRef.current = false
+        currentCellRef.current = posToCell(validPath[nearestIdx], maze)
+        isDrawingRef.current = true
+        setWallHit(false)
+        canvasRef.current.setPointerCapture(e.pointerId)
+        redraw(canvasRef.current, maze, pathRef.current, validPathLengthRef.current, false)
+        return
+      }
+    }
+
+    // Fresh start from start cell
     const { col, row } = maze.start
     const inStart =
       pos.x >= col * CELL_SIZE && pos.x < (col + 1) * CELL_SIZE &&
@@ -148,12 +200,13 @@ function App() {
     if (!inStart) return
     isDrawingRef.current = true
     hitWallRef.current = false
+    validPathLengthRef.current = 1
     pathRef.current = [pos]
     currentCellRef.current = { col, row }
     setHasPath(true)
     setWallHit(false)
     canvasRef.current.setPointerCapture(e.pointerId)
-    redraw(canvasRef.current, maze, pathRef.current, false)
+    redraw(canvasRef.current, maze, pathRef.current, 1, false)
   }
 
   const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
@@ -167,20 +220,22 @@ function App() {
         isDrawingRef.current = false
         pathRef.current.push(pos)
         setWallHit(true)
-        redraw(canvasRef.current, maze, pathRef.current, true)
+        redraw(canvasRef.current, maze, pathRef.current, validPathLengthRef.current, true)
         return
       }
       currentCellRef.current = newCell
       if (newCell.col === maze.exit.col && newCell.row === maze.exit.row) {
         isDrawingRef.current = false
         pathRef.current.push(pos)
-        redraw(canvasRef.current, maze, pathRef.current, false)
+        validPathLengthRef.current = pathRef.current.length
+        redraw(canvasRef.current, maze, pathRef.current, validPathLengthRef.current, false)
         setWon(true)
         return
       }
     }
     pathRef.current.push(pos)
-    redraw(canvasRef.current, maze, pathRef.current, false)
+    validPathLengthRef.current = pathRef.current.length
+    redraw(canvasRef.current, maze, pathRef.current, validPathLengthRef.current, false)
   }
 
   const handlePointerUp = () => {
@@ -196,7 +251,7 @@ function App() {
           <button onClick={handleClearPath}>Clear path</button>
         )}
       </div>
-      {wallHit && <p className="wall-hit">Hit a wall! Clear the path to try again.</p>}
+      {wallHit && <p className="wall-hit">Hit a wall! Click on the blue path to resume, or clear to start over.</p>}
       {won && (
         <div className="win-banner">
           <p>You solved it!</p>
