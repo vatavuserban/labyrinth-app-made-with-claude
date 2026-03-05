@@ -27,7 +27,7 @@
         "Layout is responsive around the fixed labyrinth area (centered or aligned cleanly)"
       ],
       "priority": 2,
-      "passes": false,
+      "passes": true,
       "notes": "Use CSS to enforce exact dimensions for the maze container."
     },
     {

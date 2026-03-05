@@ -30,5 +30,17 @@
   - React 19 is in use (latest as of scaffold)
 ---
 
+---
+## 2026-03-05 - US-002
+- Replaced Vite boilerplate in App.tsx with a minimal layout: h1 title, controls div (disabled Generate button placeholder), and a 500x800 `.maze-container` div
+- Rewrote App.css: centered flex layout, exact `width:500px; height:800px` on `.maze-container`, `box-sizing:border-box` to prevent overflow
+- Added `ralph/**` and `scripts/**` to eslint globalIgnores (those are separate sub-projects that should not be linted by the main config)
+- Files changed: src/App.tsx, src/App.css, eslint.config.js
+- **Learnings for future iterations:**
+  - `.maze-container` uses `flex-shrink: 0` to prevent it from collapsing in flex parents
+  - eslint.config.js now ignores `ralph/**` and `scripts/**` subdirectories
+  - The disabled "Generate labyrinth" button is a placeholder; wire it up in US-003
+---
+
 ## Next Iteration Goal
-US-002: Single-page UI layout with fixed 500x800 maze container.
+US-003: Generate button and maze data model (recursive backtracker, grid state in React).
