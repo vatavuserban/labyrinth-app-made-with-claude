@@ -1,11 +1,13 @@
 ## Codebase Patterns
-- React single-page app
+- React single-page app using Vite + React 19 + TypeScript
 - Maze rendered within a fixed 500x800 area
 - Pointer Events for input (mouse + touch)
 - Path drawing is validated against maze walls (no wall crossing)
+- Run with `npm run start` (aliased to `vite`)
+- Typecheck with `npm run typecheck` (tsc --noEmit)
 
 ## Decisions Log
-- Scaffold tool: TBD (prefer Vite; ensure npm run start exists)
+- Scaffold tool: Vite (`npm create vite@latest` with react-ts template)
 - Rendering: TBD (prefer Canvas for drawing + collision)
 - Maze algorithm: TBD (recursive backtracker recommended)
 
@@ -15,8 +17,18 @@
 - Next: scaffold app, confirm run command, render placeholder 500x800 area
 
 ---
-## Last Iteration Summary
-(none yet)
+## 2026-03-05 - US-001
+- Scaffolded Vite + React 19 + TypeScript project in repo root using `npm create vite@latest` (react-ts template)
+- Added `start` script alias for `vite` in package.json
+- Added `typecheck` script (`tsc --noEmit`) in package.json
+- Updated README.md with prerequisites, install (`npm install`), and run (`npm run start`) instructions
+- Files changed: package.json, README.md, index.html, vite.config.ts, tsconfig*.json, eslint.config.js, src/, public/
+- **Learnings for future iterations:**
+  - Scaffold tool is Vite; project root contains the app files directly (not in a subdirectory)
+  - `npm run start` starts the dev server on `http://localhost:5173`
+  - `npm run typecheck` runs `tsc --noEmit` for type checking
+  - React 19 is in use (latest as of scaffold)
+---
 
 ## Next Iteration Goal
-US-001: Create empty React app scaffold + README run steps.
+US-002: Single-page UI layout with fixed 500x800 maze container.
