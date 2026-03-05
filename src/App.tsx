@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { generateMaze, type Maze } from './maze'
+import amelie from './assets/amelie.png'
+import serban from './assets/serban-small.png'
 
 const COLS = 10
 const ROWS = 10
@@ -35,12 +37,6 @@ function drawMazeBase(ctx: CanvasRenderingContext2D, maze: Maze) {
   }
   ctx.stroke()
 
-  ctx.fillStyle = '#000000'
-  ctx.font = `bold ${CELL_SIZE * 0.6}px sans-serif`
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.fillText('S', maze.start.col * CELL_SIZE + CELL_SIZE / 2, maze.start.row * CELL_SIZE + CELL_SIZE / 2)
-  ctx.fillText('E', maze.exit.col * CELL_SIZE + CELL_SIZE / 2, maze.exit.row * CELL_SIZE + CELL_SIZE / 2)
 }
 
 function drawPath(ctx: CanvasRenderingContext2D, path: Point[]) {
@@ -214,6 +210,32 @@ function App() {
               <button onClick={handleClearPath}>Draw again</button>
             </div>
           </div>
+        )}
+        {maze && (
+          <>
+            <img
+              className="cell-icon"
+              src={amelie}
+              alt="Start"
+              style={{
+                left: maze.start.col * CELL_SIZE,
+                top: maze.start.row * CELL_SIZE,
+                width: CELL_SIZE,
+                height: CELL_SIZE,
+              }}
+            />
+            <img
+              className="cell-icon"
+              src={serban}
+              alt="Exit"
+              style={{
+                left: maze.exit.col * CELL_SIZE,
+                top: maze.exit.row * CELL_SIZE,
+                width: CELL_SIZE,
+                height: CELL_SIZE,
+              }}
+            />
+          </>
         )}
         <canvas
         ref={canvasRef}

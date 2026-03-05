@@ -72,3 +72,17 @@
   display: block;
   outline: 2px solid currentColor;
 }
+
+.cell-icon {
+  position: absolute;
+  pointer-events: none;
+  object-fit: cover;
+  border-radius: 4px;
+  z-index: 1;
+  animation: pulse-icon 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-icon {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6)); }
+  50% { transform: scale(1.12); filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1)); }
+}
