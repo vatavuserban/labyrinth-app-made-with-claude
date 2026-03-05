@@ -1,3 +1,15 @@
+## 2026-03-05 - bug2 (collision feedback layout shift)
+- Wrapped canvas in `.canvas-wrapper` (position: relative) div in App.tsx
+- Moved `.wall-hit` and `.win-banner` inside the wrapper, set to position: absolute overlay
+- `.wall-hit` overlays near top-center of canvas; `.win-banner` overlays center of canvas
+- Canvas position in page is now unaffected by whether feedback is shown or not
+- Ran typecheck and lint — both pass clean
+- Files changed: src/App.tsx, src/App.css, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Feedback that appears/disappears must be in a position:absolute overlay (not a flex sibling) to avoid layout shift
+  - `pointer-events: none` on non-interactive overlays (like `.wall-hit`) prevents blocking canvas interaction
+---
+
 ## 2026-03-05 - bug1 (resume drawing after pointerup)
 - Fixed: after a normal pointerup, user could not resume drawing — fell through to "start from start cell" logic, resetting path
 - Root cause: `handlePointerDown` only checked `hitWallRef.current` for resume; normal pointerup left `hitWallRef=false` so no resume branch was reached

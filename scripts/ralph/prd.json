@@ -126,6 +126,19 @@
       "priority": 9,
       "passes": true,
       "notes": "Do not over-engineer; keep dependencies minimal."
-    }
+    },
+    
+      {
+        "id": "bug2",
+        "title": "Collision feedback causes layout shift",
+        "description": "As a developer, I want to ensure that when a collision occurs and feedback is shown, it does not cause the labyrinth layout to shift or move down.",
+        "acceptanceCriteria": [
+          "When a collision occurs and feedback is displayed, the labyrinth container remains fixed in place without any layout shifts.",
+          "Feedback is shown in a way that does not affect the positioning of the maze (e.g., overlay, fixed position element, or space reserved for messages)."
+        ],
+        "priority": 10,
+        "passes": true,
+        "notes": "Use CSS to ensure feedback does not affect layout (e.g., position: absolute for messages)."
+      }
   ]
 }
