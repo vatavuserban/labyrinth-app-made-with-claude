@@ -43,7 +43,17 @@
 ---
 
 ## Next Iteration Goal
-US-004: Render labyrinth inside 500x800 area (already partially satisfied by US-003 canvas rendering; verify acceptance criteria pass and mark done if so, else polish).
+US-005: Input — draw a line from start to exit (pointer events, clear path button, real-time line rendering).
+
+---
+## 2026-03-05 - US-004
+- No new code written; all acceptance criteria already satisfied by the US-003 canvas implementation
+- Verified: canvas is 500×800px (25cols×20px, 40rows×20px), no overflow; walls clearly drawn; Start/Exit cells visually distinct (green/red + S/E labels); drawMaze() is deterministic from maze state
+- Ran `npm run typecheck` and `npm run lint` — both pass
+- Marked US-004 `passes: true` in prd.json and committed
+- **Learnings for future iterations:**
+  - When a previous story already satisfies the next story's acceptance criteria, just verify and mark passing — no need to add code
+---
 
 ---
 ## 2026-03-05 - US-003
