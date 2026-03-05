@@ -41,7 +41,7 @@
         "Start and Exit positions are defined and rendered"
       ],
       "priority": 3,
-      "passes": false,
+      "passes": true,
       "notes": "Use a standard maze algorithm (e.g., recursive backtracker). Keep the grid size reasonable for rendering performance."
     },
     {

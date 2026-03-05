@@ -43,4 +43,20 @@
 ---
 
 ## Next Iteration Goal
-US-003: Generate button and maze data model (recursive backtracker, grid state in React).
+US-004: Render labyrinth inside 500x800 area (already partially satisfied by US-003 canvas rendering; verify acceptance criteria pass and mark done if so, else polish).
+
+---
+## 2026-03-05 - US-003
+- Created `src/maze.ts`: `Cell` and `Maze` types, iterative recursive-backtracker `generateMaze(cols, rows)`, `shuffle` helper
+- Grid: 25 cols × 40 rows × 20px cell = 500×800 canvas drawing surface
+- Start = (0,0) top-left, Exit = (cols-1, rows-1) bottom-right
+- Updated `src/App.tsx`: added `useState<Maze|null>`, canvas ref, `drawMaze` (walls + start/exit highlight + S/E labels), wired Generate button, removed `disabled`
+- Updated `src/App.css`: replaced `border` + `box-sizing:border-box` with `outline` so canvas HTML attributes (500×800) match CSS display size exactly
+- Files changed: src/maze.ts (new), src/App.tsx, src/App.css
+- **Learnings for future iterations:**
+  - Use iterative backtracker (stack) instead of recursive to avoid call-stack issues on large grids
+  - Canvas `width`/`height` attributes set drawing surface; use `outline` (not `border`) on the canvas element to avoid CSS box-model conflicts
+  - `window.matchMedia('(prefers-color-scheme: dark)').matches` used at draw time for theme-aware canvas colors
+  - Wall drawing: all 4 walls per cell are drawn (shared walls rendered twice, lines overlap cleanly)
+  - US-004 rendering criteria are essentially met by this canvas implementation; can be confirmed and marked passing next iteration
+---
