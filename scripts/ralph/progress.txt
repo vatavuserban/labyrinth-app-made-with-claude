@@ -1,3 +1,13 @@
+## 2026-03-05 - US-008
+- Added Usage section to README explaining how to play (Generate → draw from S to E → win)
+- Verified: `npm run typecheck` passes (no TS errors), `npm run lint` passes (no ESLint errors), `npm run build` succeeds (Vite + tsc build in ~540ms)
+- No code changes required — linting (ESLint flat config) and typecheck were already in place from prior stories
+- Files changed: README.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - All quality checks (`typecheck`, `lint`, `build`) pass clean — project is in good shape
+  - README now has Prerequisites, Install, Run, Usage, and Other commands sections
+---
+
 ## Codebase Patterns
 - React single-page app using Vite + React 19 + TypeScript
 - Maze rendered within a fixed 500x800 area

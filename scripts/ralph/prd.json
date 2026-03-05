@@ -111,7 +111,7 @@
         "App builds successfully (if build script exists) or at least runs reliably via npm run start"
       ],
       "priority": 8,
-      "passes": false,
+      "passes": true,
       "notes": "Do not over-engineer; keep dependencies minimal."
     }
   ]
