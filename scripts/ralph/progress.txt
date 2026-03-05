@@ -43,7 +43,24 @@
 ---
 
 ## Next Iteration Goal
-US-006: Collision rules — prevent drawing through walls.
+US-007: Win condition and feedback.
+
+---
+## 2026-03-05 - US-006
+- Added cell-based wall collision detection to `src/App.tsx`
+- Added `hasWallBetween(maze, from, to)`: walks from→to cell-by-cell (horizontal first), returns true if any wall blocks the path
+- Added `posToCell(pos, maze)`: converts pixel position to clamped grid cell
+- Added `hitWallRef` and `currentCellRef` refs; `wallHit` state for UI
+- On wall collision: stops drawing, turns path red, shows "Hit a wall!" message
+- "Clear path" button (already present) resets collision state; user can redraw
+- Added `.wall-hit` CSS class in `App.css`
+- Files changed: src/App.tsx, src/App.css
+- **Learnings for future iterations:**
+  - Cell-based collision (track current cell, check walls when crossing cell boundary) is simpler and more reliable than line-segment intersection for grid mazes
+  - `hasWallBetween` handles multi-cell jumps (fast pointer movement) by stepping cell-by-cell; horizontal steps are checked before vertical
+  - Refs (`hitWallRef`, `currentCellRef`) used for drawing state; minimal `wallHit` boolean state for React UI re-render
+  - Path turns red on wall hit — reuse `#ef4444` (already used for exit cell color) for consistency
+---
 
 ---
 ## 2026-03-05 - US-005

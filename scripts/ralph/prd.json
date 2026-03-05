@@ -84,7 +84,7 @@
         "User can restart drawing after a collision (auto-clear or via Clear button)"
       ],
       "priority": 6,
-      "passes": false,
+      "passes": true,
       "notes": "If using Canvas, you can check sampled points against wall boundaries; if using grid model, check movement between cells for wall presence."
     },
     {
