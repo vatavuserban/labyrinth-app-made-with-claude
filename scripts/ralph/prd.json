@@ -140,6 +140,21 @@
         "priority": 10,
         "passes": true,
         "notes": "Use CSS to ensure feedback does not affect layout (e.g., position: absolute for messages)."
+      },
+      {
+        "id": "US-009",
+        "title": "Visual polish for Start and Exit icons",
+        "description": "As a user, I want the Start and Exit positions to be visually distinct and engaging so I can easily identify them in the maze.",
+        "acceptanceCriteria": [
+          "Start cell uses a distinct icon (Amelie PNG) that is clearly visible and appropriately sized for the maze cell.",
+          "Exit cell uses a different distinct icon (Serban PNG) that is clearly visible and appropriately sized for the maze cell.",
+          "Both icons are visually distinct from each other and from the maze walls.",
+          "Consider adding a simple animation or highlight effect to the start and exit icons to make them more visually engaging."
+        ],
+        "priority": 11,
+        "passes": true,
+        "notes": "Use CSS animations or simple JavaScript effects to enhance the visual appeal of the icons without overcomplicating the implementation."
+
       }
   ]
 }

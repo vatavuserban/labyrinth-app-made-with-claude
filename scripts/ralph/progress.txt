@@ -1,3 +1,18 @@
+## 2026-03-05 - US-009 (visual polish: Start/Exit icons)
+- Replaced S/E text labels on canvas with <img> overlays using amelie.png (Start) and serban-small.png (Exit)
+- Icons positioned absolutely inside `.canvas-wrapper` (already position:relative) at exact cell pixel coords
+- Added `.cell-icon` CSS class: position:absolute, pointer-events:none, object-fit:cover, z-index:1
+- Added `@keyframes pulse-icon` animation: scale(1)→scale(1.12) + drop-shadow pulse every 1.5s
+- Kept green/red canvas background under icons for visual distinction from walls
+- Removed the old canvas text drawing (S/E labels) from `drawMazeBase`
+- Ran typecheck and lint — both pass clean
+- Files changed: src/App.tsx, src/App.css, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Vite handles PNG imports natively with `import foo from './assets/foo.png'`
+  - Canvas-wrapper's existing `position:relative` makes absolute icon overlays work without extra wrapper
+  - `pointer-events: none` on icon overlays is critical — they sit above the canvas and must not intercept pointer events
+---
+
 ## 2026-03-05 - US-003 (iteration 2: ensure start has ≥2 open paths)
 - Root cause of passes:false: start cell at corner (0,0) can end up with only 1 open path after backtracker
 - Fix: post-process after generation — count open walls on start cell; if <2, force-open one of the remaining candidates (right or bottom)
