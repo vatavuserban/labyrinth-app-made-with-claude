@@ -1,3 +1,14 @@
+## 2026-03-05 - US-004
+- Changed grid from 25 cols × 40 rows × 20px to 50 cols × 50 rows × 10px (500×500 canvas)
+- Canvas now 500×500; CSS container auto-sizes to canvas HTML attributes (no CSS change needed)
+- 50×50 grid satisfies AC "row grid should be big maybe 50x50" and "500x500 container"
+- Ran typecheck and lint — both pass
+- Files changed: src/App.tsx, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - CELL_SIZE=10px with 50×50 grid gives 500×500 canvas matching updated US-004 AC
+  - CSS maze-container uses no explicit size — canvas HTML attributes drive the layout
+---
+
 ## 2026-03-05 - US-006 (iteration 3: stricter collision rules)
 - Rewrote collision/resume logic per updated acceptance criteria (Rule A: resume strictly from lastValidPoint)
 - On collision: path now freezes at last valid point — invalid point is NOT added to path (no red segment)

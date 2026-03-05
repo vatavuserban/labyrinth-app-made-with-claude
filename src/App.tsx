@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { generateMaze, type Maze } from './maze'
 
-const COLS = 25
-const ROWS = 40
-const CELL_SIZE = 20
+const COLS = 50
+const ROWS = 50
+const CELL_SIZE = 10
 
 type Point = { x: number; y: number }
 
