@@ -43,7 +43,25 @@
 ---
 
 ## Next Iteration Goal
-US-005: Input — draw a line from start to exit (pointer events, clear path button, real-time line rendering).
+US-006: Collision rules — prevent drawing through walls.
+
+---
+## 2026-03-05 - US-005
+- Added pointer-event-based drawing to `src/App.tsx`
+- Drawing only starts when `pointerdown` lands inside the Start cell (top-left)
+- `setPointerCapture` ensures events continue routing to canvas even when pointer leaves element
+- Path stored in `pathRef` (ref, not state) to avoid re-renders on every move; `hasPath` boolean state controls "Clear path" button visibility
+- Each `pointermove` appends a point and calls `redraw(canvas, maze, path)` which redraws maze base + blue path overlay
+- `onPointerCancel` and `onPointerUp` both stop drawing
+- `style={{ touchAction: 'none' }}` on canvas prevents browser scroll/zoom from interfering with touch drawing
+- "Clear path" button appears only when a path exists; clears without regenerating maze
+- Files changed: src/App.tsx
+- **Learnings for future iterations:**
+  - Use refs (not state) for high-frequency data (path points) to avoid expensive re-renders; use minimal boolean state for UI toggling
+  - `setPointerCapture` on `pointerdown` ensures `pointermove`/`pointerup` events are received even outside the element bounds
+  - `touchAction: 'none'` on canvas is required to prevent mobile scroll interference
+  - Redraw the entire canvas on each move (maze base + path) — Canvas is fast enough at 500×800
+---
 
 ---
 ## 2026-03-05 - US-004

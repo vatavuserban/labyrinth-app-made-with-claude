@@ -70,7 +70,7 @@
         "A 'Clear path' action exists to reset drawing without regenerating the maze"
       ],
       "priority": 5,
-      "passes": false,
+      "passes": true,
       "notes": "Use Pointer Events (pointerdown/move/up/cancel) to unify mouse + touch."
     },
     {
