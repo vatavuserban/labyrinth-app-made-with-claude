@@ -78,10 +78,9 @@
       "title": "Collision rules: prevent drawing through walls",
       "description": "As a user, I want the game to prevent cheating by drawing through walls so the labyrinth is meaningful.",
       "acceptanceCriteria": [
-        "If the drawn path crosses a wall, the app detects it and blocks progress (either stop drawing, or mark as invalid and require restart)",
+        "If the drawn path crosses a wall, the app detects it and blocks progress (stop drawing). after you can continue drawing from the last valid point (no auto-reset to start) or from a point presviosly on the line before the collision",
         "Collision detection is reliable at typical pointer speeds",
-        "User receives clear feedback when they hit a wall (message or visual indicator)",
-        "User can restart drawing after a collision (auto-clear or via Clear button)"
+        "User receives clear feedback when they hit a wall (message or visual indicator)"
       ],
       "priority": 6,
       "passes": true,

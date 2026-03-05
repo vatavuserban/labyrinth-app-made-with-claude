@@ -1,3 +1,15 @@
+## 2026-03-05 - US-006 (iteration 2: resume from path)
+- Added `validPathLengthRef` to track the length of the valid (wall-free) portion of the path
+- `drawPath` now draws valid portion in blue and wall-hit extension in red as separate segments
+- On `pointerdown` when `hitWallRef.current` is true: snaps to nearest point on the valid path within CELL_SIZE radius, truncates path to that point, clears wall-hit state, resumes drawing
+- Wall-hit message updated: "Click on the blue path to resume, or clear to start over."
+- Files changed: src/App.tsx, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Track valid path length separately from total path length to support partial-path resume
+  - Snap radius = CELL_SIZE (20px) gives reliable click-on-path UX without being too forgiving
+  - After resume, `validPathLengthRef` resets to the new (shorter) path length so subsequent collisions are tracked correctly
+---
+
 ## 2026-03-05 - US-008
 - Added Usage section to README explaining how to play (Generate → draw from S to E → win)
 - Verified: `npm run typecheck` passes (no TS errors), `npm run lint` passes (no ESLint errors), `npm run build` succeeds (Vite + tsc build in ~540ms)
