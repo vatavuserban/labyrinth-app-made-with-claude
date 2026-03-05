@@ -22,18 +22,38 @@
   align-items: center;
 }
 
+.canvas-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
 .wall-hit {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
   margin: 0;
   color: #ef4444;
   font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .win-banner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
   background: #22c55e;
   color: #ffffff;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
+  z-index: 1;
 }
 
 .win-banner p {
@@ -51,5 +71,4 @@
 .maze-container {
   display: block;
   outline: 2px solid currentColor;
-  flex-shrink: 0;
 }

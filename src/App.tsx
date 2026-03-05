@@ -204,17 +204,18 @@ function App() {
           <button onClick={handleClearPath}>Clear path</button>
         )}
       </div>
-      {wallHit && <p className="wall-hit">Hit a wall! Click to continue from where you stopped.</p>}
-      {won && (
-        <div className="win-banner">
-          <p>You solved it!</p>
-          <div className="win-actions">
-            <button onClick={handleGenerate}>Generate new labyrinth</button>
-            <button onClick={handleClearPath}>Draw again</button>
+      <div className="canvas-wrapper">
+        {wallHit && <p className="wall-hit">Hit a wall! Click to continue from where you stopped.</p>}
+        {won && (
+          <div className="win-banner">
+            <p>You solved it!</p>
+            <div className="win-actions">
+              <button onClick={handleGenerate}>Generate new labyrinth</button>
+              <button onClick={handleClearPath}>Draw again</button>
+            </div>
           </div>
-        </div>
-      )}
-      <canvas
+        )}
+        <canvas
         ref={canvasRef}
         className="maze-container"
         width={COLS * CELL_SIZE}
@@ -225,6 +226,7 @@ function App() {
         onPointerCancel={handlePointerUp}
         style={{ touchAction: 'none' }}
       />
+      </div>
     </div>
   )
 }
