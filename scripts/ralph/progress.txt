@@ -1,3 +1,19 @@
+## 2026-03-05 - US-006 (iteration 3: stricter collision rules)
+- Rewrote collision/resume logic per updated acceptance criteria (Rule A: resume strictly from lastValidPoint)
+- On collision: path now freezes at last valid point — invalid point is NOT added to path (no red segment)
+- On resume: any pointerdown clears hitWallRef and resumes drawing; subsequent pointermove extends path from lastValidPoint
+- Removed validPathLengthRef (no longer needed since path only ever contains valid points)
+- Removed snap-to-path resume logic (user no longer needs to click on blue path)
+- Updated wall-hit message: "Hit a wall! Click to continue from where you stopped."
+- Simplified drawPath and redraw signatures (no hitWall/validLength params)
+- Ran typecheck and lint — both pass clean
+- Files changed: src/App.tsx, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Never append invalid points to path on collision — freeze in place
+  - Resume anchor = tail of pathRef (last valid point); no path truncation needed
+  - drawPath doesn't need a red/invalid segment anymore — simpler code
+---
+
 ## 2026-03-05 - US-006 (iteration 2: resume from path)
 - Added `validPathLengthRef` to track the length of the valid (wall-free) portion of the path
 - `drawPath` now draws valid portion in blue and wall-hit extension in red as separate segments

@@ -46,16 +46,16 @@
     },
     {
       "id": "US-004",
-      "title": "Render labyrinth inside 500x800 area",
+      "title": "Render labyrinth inside 500x500 area",
       "description": "As a user, I want to see the labyrinth walls clearly rendered inside the fixed area.",
       "acceptanceCriteria": [
-        "Maze is rendered fully within the 500x800 container (no overflow)",
+        "Maze is rendered fully within the 500x500 container (no overflow)",
         "Walls are clearly visible; paths are navigable",
         "Start cell and Exit cell are visually distinct (icons or colors)",
-        "Rendering approach is deterministic from the maze state (Canvas or SVG/HTML grid)"
+        "Rendering approach is deterministic from the maze state (Canvas or SVG/HTML grid). row grid should be big maybe 50x50"
       ],
       "priority": 4,
-      "passes": true,
+      "passes": false,
       "notes": "Canvas is recommended for drawing and input tracking; SVG also acceptable."
     },
     {
@@ -78,13 +78,14 @@
       "title": "Collision rules: prevent drawing through walls",
       "description": "As a user, I want the game to prevent cheating by drawing through walls so the labyrinth is meaningful.",
       "acceptanceCriteria": [
-        "If the drawn path crosses a wall, the app detects it and blocks progress (stop drawing). after you can continue drawing from the last valid point (no auto-reset to start) or from a point presviosly on the line before the collision",
-        "Collision detection is reliable at typical pointer speeds",
-        "User receives clear feedback when they hit a wall (message or visual indicator)"
+        "When the drawn path crosses a wall, drawing stops immediately at the last valid point (do not add the invalid point/segment).",
+        "After a collision, the user can resume drawing ONLY from the last valid point: the next pointerdown enables drawing and subsequent pointer moves extend the same path from lastValidPoint (no auto-reset to Start, no starting from arbitrary points).",
+        "Collision detection is reliable at typical pointer speeds.",
+        "User receives clear feedback on collision (visual indicator and/or short message)."
       ],
       "priority": 6,
       "passes": true,
-      "notes": "If using Canvas, you can check sampled points against wall boundaries; if using grid model, check movement between cells for wall presence."
+      "notes": "Rule A: resume strictly from lastValidPoint. Implementation hint: maintain lastValidPoint and pathPoints; on collision do not append invalid points; on next pointerdown set isDrawing=true and keep anchor=lastValidPoint; ignore attempts to start elsewhere."
     },
     {
       "id": "US-007",
