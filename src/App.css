@@ -23,16 +23,7 @@
 }
 
 .maze-container {
-  width: 500px;
-  height: 800px;
-  border: 2px solid currentColor;
-  box-sizing: border-box;
-  background-color: #1a1a1a;
+  display: block;
+  outline: 2px solid currentColor;
   flex-shrink: 0;
-}
-
-@media (prefers-color-scheme: light) {
-  .maze-container {
-    background-color: #f0f0f0;
-  }
 }
