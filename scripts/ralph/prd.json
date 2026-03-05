@@ -38,7 +38,8 @@
         "A 'Generate labyrinth' button exists and is clearly visible",
         "Clicking the button creates a new maze (different layout most of the time)",
         "Maze generation produces a data model (grid/cells/walls) stored in React state",
-        "Start and Exit positions are defined and rendered"
+        "Start and Exit positions are defined and rendered",
+        "start shiould be in top-left area, exit in bottom-right area, but not necessarily at corners and start should have at least 2 starting paths to prevent immediate dead-ends"
       ],
       "priority": 3,
       "passes": true,

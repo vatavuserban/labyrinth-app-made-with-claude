@@ -1,3 +1,14 @@
+## 2026-03-05 - US-003 (iteration 2: ensure start has ≥2 open paths)
+- Root cause of passes:false: start cell at corner (0,0) can end up with only 1 open path after backtracker
+- Fix: post-process after generation — count open walls on start cell; if <2, force-open one of the remaining candidates (right or bottom)
+- No change to start/exit positions (still (0,0) and (cols-1,rows-1)); no UI changes needed
+- Ran typecheck and lint — both pass clean
+- Files changed: src/maze.ts, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Corner start cells may have only 1 open path from backtracker — always post-process to guarantee ≥2
+  - Force-open approach: remove wall on start side AND opposite wall on neighbor; safe since it only adds connections
+---
+
 ## 2026-03-05 - bug2 (collision feedback layout shift)
 - Wrapped canvas in `.canvas-wrapper` (position: relative) div in App.tsx
 - Moved `.wall-hit` and `.win-banner` inside the wrapper, set to position: absolute overlay

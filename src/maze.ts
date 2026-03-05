@@ -56,6 +56,25 @@ export function generateMaze(cols: number, rows: number): Maze {
     }
   }
 
+  // Ensure start has at least 2 open paths to prevent immediate dead-ends.
+  // The corner cell (0,0) has only 2 possible directions (right, bottom);
+  // the backtracker guarantees ≥1, so we may need to force-open the second.
+  const startCell = grid[0][0];
+  const startCandidates = [
+    { wall: 'right' as const, opposite: 'left' as const, nc: 1, nr: 0 },
+    { wall: 'bottom' as const, opposite: 'top' as const, nc: 0, nr: 1 },
+  ];
+  const openCount = startCandidates.filter(({ wall }) => !startCell.walls[wall]).length;
+  if (openCount < 2) {
+    for (const { wall, opposite, nc, nr } of startCandidates) {
+      if (startCell.walls[wall]) {
+        startCell.walls[wall] = false;
+        grid[nr][nc].walls[opposite] = false;
+        break;
+      }
+    }
+  }
+
   return {
     grid,
     cols,
