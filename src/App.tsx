@@ -43,9 +43,9 @@ function drawMazeBase(ctx: CanvasRenderingContext2D, maze: Maze) {
   ctx.fillText('E', maze.exit.col * CELL_SIZE + CELL_SIZE / 2, maze.exit.row * CELL_SIZE + CELL_SIZE / 2)
 }
 
-function drawPath(ctx: CanvasRenderingContext2D, path: Point[]) {
+function drawPath(ctx: CanvasRenderingContext2D, path: Point[], hitWall: boolean) {
   if (path.length < 2) return
-  ctx.strokeStyle = '#3b82f6'
+  ctx.strokeStyle = hitWall ? '#ef4444' : '#3b82f6'
   ctx.lineWidth = 3
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
@@ -57,10 +57,39 @@ function drawPath(ctx: CanvasRenderingContext2D, path: Point[]) {
   ctx.stroke()
 }
 
-function redraw(canvas: HTMLCanvasElement, maze: Maze, path: Point[]) {
+function redraw(canvas: HTMLCanvasElement, maze: Maze, path: Point[], hitWall: boolean) {
   const ctx = canvas.getContext('2d')!
   drawMazeBase(ctx, maze)
-  drawPath(ctx, path)
+  drawPath(ctx, path, hitWall)
+}
+
+type Cell = { col: number; row: number }
+
+function posToCell(pos: Point, maze: Maze): Cell {
+  return {
+    col: Math.max(0, Math.min(maze.cols - 1, Math.floor(pos.x / CELL_SIZE))),
+    row: Math.max(0, Math.min(maze.rows - 1, Math.floor(pos.y / CELL_SIZE))),
+  }
+}
+
+function hasWallBetween(maze: Maze, from: Cell, to: Cell): boolean {
+  let cur = { ...from }
+  while (cur.col !== to.col || cur.row !== to.row) {
+    const dc = Math.sign(to.col - cur.col)
+    const dr = Math.sign(to.row - cur.row)
+    if (dc !== 0) {
+      const cell = maze.grid[cur.row][cur.col]
+      if (dc === 1 && cell.walls.right) return true
+      if (dc === -1 && cell.walls.left) return true
+      cur = { col: cur.col + dc, row: cur.row }
+    } else {
+      const cell = maze.grid[cur.row][cur.col]
+      if (dr === 1 && cell.walls.bottom) return true
+      if (dr === -1 && cell.walls.top) return true
+      cur = { col: cur.col, row: cur.row + dr }
+    }
+  }
+  return false
 }
 
 function getCanvasPos(e: React.PointerEvent<HTMLCanvasElement>, canvas: HTMLCanvasElement): Point {
@@ -71,29 +100,38 @@ function getCanvasPos(e: React.PointerEvent<HTMLCanvasElement>, canvas: HTMLCanv
 function App() {
   const [maze, setMaze] = useState<Maze | null>(null)
   const [hasPath, setHasPath] = useState(false)
+  const [wallHit, setWallHit] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const isDrawingRef = useRef(false)
   const pathRef = useRef<Point[]>([])
+  const hitWallRef = useRef(false)
+  const currentCellRef = useRef<Cell | null>(null)
 
   const handleGenerate = () => {
     isDrawingRef.current = false
+    hitWallRef.current = false
     pathRef.current = []
+    currentCellRef.current = null
     setHasPath(false)
+    setWallHit(false)
     setMaze(generateMaze(COLS, ROWS))
   }
 
   const handleClearPath = () => {
     isDrawingRef.current = false
+    hitWallRef.current = false
     pathRef.current = []
+    currentCellRef.current = null
     setHasPath(false)
+    setWallHit(false)
     if (maze && canvasRef.current) {
-      redraw(canvasRef.current, maze, [])
+      redraw(canvasRef.current, maze, [], false)
     }
   }
 
   useEffect(() => {
     if (maze && canvasRef.current) {
-      redraw(canvasRef.current, maze, pathRef.current)
+      redraw(canvasRef.current, maze, pathRef.current, hitWallRef.current)
     }
   }, [maze])
 
@@ -106,16 +144,33 @@ function App() {
       pos.y >= row * CELL_SIZE && pos.y < (row + 1) * CELL_SIZE
     if (!inStart) return
     isDrawingRef.current = true
+    hitWallRef.current = false
     pathRef.current = [pos]
+    currentCellRef.current = { col, row }
     setHasPath(true)
+    setWallHit(false)
     canvasRef.current.setPointerCapture(e.pointerId)
-    redraw(canvasRef.current, maze, pathRef.current)
+    redraw(canvasRef.current, maze, pathRef.current, false)
   }
 
   const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!isDrawingRef.current || !maze || !canvasRef.current) return
-    pathRef.current.push(getCanvasPos(e, canvasRef.current))
-    redraw(canvasRef.current, maze, pathRef.current)
+    if (!isDrawingRef.current || hitWallRef.current || !maze || !canvasRef.current) return
+    const pos = getCanvasPos(e, canvasRef.current)
+    const newCell = posToCell(pos, maze)
+    const currCell = currentCellRef.current!
+    if (newCell.col !== currCell.col || newCell.row !== currCell.row) {
+      if (hasWallBetween(maze, currCell, newCell)) {
+        hitWallRef.current = true
+        isDrawingRef.current = false
+        pathRef.current.push(pos)
+        setWallHit(true)
+        redraw(canvasRef.current, maze, pathRef.current, true)
+        return
+      }
+      currentCellRef.current = newCell
+    }
+    pathRef.current.push(pos)
+    redraw(canvasRef.current, maze, pathRef.current, false)
   }
 
   const handlePointerUp = () => {
@@ -131,6 +186,7 @@ function App() {
           <button onClick={handleClearPath}>Clear path</button>
         )}
       </div>
+      {wallHit && <p className="wall-hit">Hit a wall! Clear the path to try again.</p>}
       <canvas
         ref={canvasRef}
         className="maze-container"
