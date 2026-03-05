@@ -55,7 +55,7 @@
         "Rendering approach is deterministic from the maze state (Canvas or SVG/HTML grid)"
       ],
       "priority": 4,
-      "passes": false,
+      "passes": true,
       "notes": "Canvas is recommended for drawing and input tracking; SVG also acceptable."
     },
     {
