@@ -43,7 +43,22 @@
 ---
 
 ## Next Iteration Goal
-US-007: Win condition and feedback.
+US-008: Polish: README + basic quality checks.
+
+---
+## 2026-03-05 - US-007
+- Added `won` state to `App.tsx`; detects win when path enters exit cell without crossing a wall
+- In `handlePointerMove`, after a valid cell move, checks if `newCell` equals `maze.exit` → sets `won=true`, stops drawing
+- Renders a green `.win-banner` with "You solved it!" message and two action buttons: "Generate new labyrinth" and "Draw again"
+- "Draw again" calls `handleClearPath` (resets path + won state, keeps maze); "Generate new labyrinth" calls `handleGenerate`
+- Both `handleGenerate` and `handleClearPath` reset `won` to false
+- Added `.win-banner`, `.win-banner p`, `.win-actions` styles to `App.css`
+- Files changed: src/App.tsx, src/App.css, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Win detection uses the same `currentCellRef` cell-tracking already used for wall collision — no extra state needed
+  - The exit cell check runs only after a valid wall-free cell transition, so no false positives
+  - Reuse existing button styles (no extra CSS class needed for buttons inside the banner)
+---
 
 ---
 ## 2026-03-05 - US-006

@@ -101,6 +101,7 @@ function App() {
   const [maze, setMaze] = useState<Maze | null>(null)
   const [hasPath, setHasPath] = useState(false)
   const [wallHit, setWallHit] = useState(false)
+  const [won, setWon] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const isDrawingRef = useRef(false)
   const pathRef = useRef<Point[]>([])
@@ -114,6 +115,7 @@ function App() {
     currentCellRef.current = null
     setHasPath(false)
     setWallHit(false)
+    setWon(false)
     setMaze(generateMaze(COLS, ROWS))
   }
 
@@ -124,6 +126,7 @@ function App() {
     currentCellRef.current = null
     setHasPath(false)
     setWallHit(false)
+    setWon(false)
     if (maze && canvasRef.current) {
       redraw(canvasRef.current, maze, [], false)
     }
@@ -168,6 +171,13 @@ function App() {
         return
       }
       currentCellRef.current = newCell
+      if (newCell.col === maze.exit.col && newCell.row === maze.exit.row) {
+        isDrawingRef.current = false
+        pathRef.current.push(pos)
+        redraw(canvasRef.current, maze, pathRef.current, false)
+        setWon(true)
+        return
+      }
     }
     pathRef.current.push(pos)
     redraw(canvasRef.current, maze, pathRef.current, false)
@@ -187,6 +197,15 @@ function App() {
         )}
       </div>
       {wallHit && <p className="wall-hit">Hit a wall! Clear the path to try again.</p>}
+      {won && (
+        <div className="win-banner">
+          <p>You solved it!</p>
+          <div className="win-actions">
+            <button onClick={handleGenerate}>Generate new labyrinth</button>
+            <button onClick={handleClearPath}>Draw again</button>
+          </div>
+        </div>
+      )}
       <canvas
         ref={canvasRef}
         className="maze-container"

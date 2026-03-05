@@ -97,7 +97,7 @@
         "No false positives: must actually enter the Exit area via valid path (no wall crossing)"
       ],
       "priority": 7,
-      "passes": false,
+      "passes": true,
       "notes": "Keep the UX minimal but clear."
     },
     {
