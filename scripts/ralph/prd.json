@@ -1,6 +1,6 @@
 {
   "project": "react-labyrinth",
-  "branchName": "master",
+  "branchName": "main",
   "description": "Single-page React labyrinth app. Generates a maze inside a 500x800 area. Supports user input to draw a path from start to exit. Runnable locally via npm scripts.",
   "userStories": [
     {
@@ -155,6 +155,19 @@
         "passes": true,
         "notes": "Use CSS animations or simple JavaScript effects to enhance the visual appeal of the icons without overcomplicating the implementation."
 
+      },
+      {
+        "id": "US-010",
+        "title": "Mobile responsiveness and touch optimization",
+        "description": "As a mobile user, I want the labyrinth app to be responsive and optimized for touch input so I can play on my smartphone or tablet.",
+        "acceptanceCriteria": [
+          "The labyrinth container scales appropriately on different screen sizes while maintaining the aspect ratio (e.g., using CSS max-width and max-height).",
+          "Touch input is fully supported for drawing paths, with no loss of functionality compared to desktop (using Pointer Events).",
+          "UI elements (buttons, messages) are easily tappable on smaller screens without causing layout issues."
+        ],
+        "priority": 12,
+        "passes": false,
+        "notes": "Test on various devices to ensure a good user experience across screen sizes."
       }
   ]
 }
