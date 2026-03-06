@@ -90,7 +90,9 @@ function hasWallBetween(maze: Maze, from: Cell, to: Cell): boolean {
 
 function getCanvasPos(e: React.PointerEvent<HTMLCanvasElement>, canvas: HTMLCanvasElement): Point {
   const rect = canvas.getBoundingClientRect()
-  return { x: e.clientX - rect.left, y: e.clientY - rect.top }
+  const scaleX = canvas.width / rect.width
+  const scaleY = canvas.height / rect.height
+  return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY }
 }
 
 function App() {
@@ -218,10 +220,10 @@ function App() {
               src={amelie}
               alt="Start"
               style={{
-                left: maze.start.col * CELL_SIZE,
-                top: maze.start.row * CELL_SIZE,
-                width: CELL_SIZE,
-                height: CELL_SIZE,
+                left: `${(maze.start.col / COLS) * 100}%`,
+                top: `${(maze.start.row / ROWS) * 100}%`,
+                width: `${100 / COLS}%`,
+                height: `${100 / ROWS}%`,
               }}
             />
             <img
@@ -229,10 +231,10 @@ function App() {
               src={serban}
               alt="Exit"
               style={{
-                left: maze.exit.col * CELL_SIZE,
-                top: maze.exit.row * CELL_SIZE,
-                width: CELL_SIZE,
-                height: CELL_SIZE,
+                left: `${(maze.exit.col / COLS) * 100}%`,
+                top: `${(maze.exit.row / ROWS) * 100}%`,
+                width: `${100 / COLS}%`,
+                height: `${100 / ROWS}%`,
               }}
             />
           </>

@@ -1,3 +1,19 @@
+## 2026-03-06 - US-010 (Mobile responsiveness and touch optimization)
+- Canvas scales to viewport width via CSS `max-width: 100%; aspect-ratio: 1; height: auto` — maintains 1:1 ratio on any screen size
+- `getCanvasPos` updated to apply scale correction: `(clientX - rect.left) * (canvas.width / rect.width)` so pointer coords map correctly when canvas is CSS-scaled
+- Icon positions switched from pixel values to percentages (`left: col/COLS * 100%`, `width: 100/COLS%`) so they track correctly with the scaled canvas
+- `.canvas-wrapper` changed to `width: 100%; max-width: 500px` (removes `flex-shrink: 0`)
+- `#root` gets `box-sizing: border-box; width: 100%` to prevent horizontal overflow
+- All buttons get `min-height: 44px` for touch targets
+- Mobile media query (`max-width: 540px`): reduced padding, smaller h1, wrapping controls
+- Ran typecheck and lint — both pass clean
+- Files changed: src/App.tsx, src/App.css, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Scale-corrected `getCanvasPos` is essential when canvas CSS size != canvas attribute size
+  - Percentage-based icon positioning inside `.canvas-wrapper` ensures icons track with a CSS-scaled canvas
+  - `aspect-ratio: 1` + `max-width: 100%` on a square canvas is the cleanest approach for responsive canvas scaling
+---
+
 ## 2026-03-05 - US-009 (visual polish: Start/Exit icons)
 - Replaced S/E text labels on canvas with <img> overlays using amelie.png (Start) and serban-small.png (Exit)
 - Icons positioned absolutely inside `.canvas-wrapper` (already position:relative) at exact cell pixel coords

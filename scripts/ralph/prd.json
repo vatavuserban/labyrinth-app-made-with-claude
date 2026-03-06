@@ -166,7 +166,7 @@
           "UI elements (buttons, messages) are easily tappable on smaller screens without causing layout issues."
         ],
         "priority": 12,
-        "passes": false,
+        "passes": true,
         "notes": "Test on various devices to ensure a good user experience across screen sizes."
       }
   ]
